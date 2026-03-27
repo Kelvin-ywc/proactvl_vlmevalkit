@@ -14,6 +14,8 @@ ln -s <PATH to run.py> ./run.py
 ```
 # Video-MME
 python run.py --data Video-MME_8frame --model Proact-VL --verbose
+torchrun --nproc-per-node=8 --data Video-MME_8frame --model Proact-VL --verbose
+
 python run.py --data Video-MME_64frame --model Proact-VL --verbose
 python run.py --data Video-MME_8frame_subs --model Proact-VL --verbose
 
