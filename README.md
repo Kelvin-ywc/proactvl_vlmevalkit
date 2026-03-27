@@ -14,7 +14,8 @@ ln -s <PATH to run.py> ./run.py
 ```
 # Video-MME
 python run.py --data Video-MME_8frame --model Proact-VL --verbose
-torchrun --nproc-per-node=8 --data Video-MME_8frame --model Proact-VL --verbose
+export CUDA_VISIBLE_DEVICES=2,3,4,5 
+torchrun --nproc-per-node=4 run.py --data Video-MME_8frame --model Proact-VL --verbose
 
 python run.py --data Video-MME_64frame --model Proact-VL --verbose
 python run.py --data Video-MME_8frame_subs --model Proact-VL --verbose
@@ -22,6 +23,7 @@ python run.py --data Video-MME_8frame_subs --model Proact-VL --verbose
 python run.py --data Video-MME_8frame --model Qwen3-VL-8B-Instruct --verbose
 python run.py --data Video-MME_64frame --model Qwen3-VL-8B-Instruct --verbose
 python run.py --data Video-MME_8frame_subs --model Qwen3-VL-8B-Instruct --verbose
+
 # LongVideoBench
 python run.py --data LongVideoBench_8frame --model Proact-VL --verbose
 python run.py --data LongVideoBench_8frame_subs --model Proact-VL --verbose
@@ -30,5 +32,4 @@ python run.py --data LongVideoBench_64frame --model Proact-VL --verbose
 python run.py --data LongVideoBench_8frame --model Qwen3-VL-8B-Instruct --verbose
 python run.py --data LongVideoBench_8frame_subs --model Qwen3-VL-8B-Instruct --verbose
 python run.py --data LongVideoBench_64frame --model Qwen3-VL-8B-Instruct --verbose
-
 ```
