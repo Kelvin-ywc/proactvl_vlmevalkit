@@ -126,9 +126,14 @@ class ProactVLChat(BaseModel):
         return hist
 
     def generate_inner(self, message, dataset=None):
+        # print(message)
+        # exit()
         self.infer.assistants[0].clear_session()
-        assert message[0]['role'] == 'system'
+        # assert message[0]['role'] == 'system'
         # self.infer.assistants[0].prime_system_prompt(message[0]['value'])
+        system_prompt = message[0]['value']
+        if system_prompt == '':
+            system_prompt = 'You are a helpful assistant. Please answer the user\'s question.'
         # message = [s for s in message if ('role' not in s or 'role' in s and s['role'] != 'system')]
         vl_list = [{'image': s['value']} if s['type'] == 'image' else {'text': s['value']} for s in message]
         # query = self.infer.tokenizer.from_list_format(vl_list)
@@ -138,7 +143,8 @@ class ProactVLChat(BaseModel):
                 'content': [
                     {
                         'type': 'text',
-                        'text': message[0]['value']
+                        # 'text': message[0]['value']
+                        'text': system_prompt
                     }
                 ]
             },
@@ -168,7 +174,9 @@ class ProactVLChat(BaseModel):
         # print(inputs.keys())
         self.infer.model.config.num_hidden_layers = 36
         self.infer.assistants[0].forward_cache(inputs, generate_flag=False)
-        response = self.infer.assistants[0].forward_assistant()
+        response = self.infer.assistants[0].forward_assistant()[0]
+        # print(response)
+        # exit()
         # print(generated_ids)
         # generated_ids_trimmed = [
         #     out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
