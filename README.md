@@ -25,11 +25,13 @@ python run.py --data Video-MME_64frame --model Qwen3-VL-8B-Instruct --verbose
 python run.py --data Video-MME_8frame_subs --model Qwen3-VL-8B-Instruct --verbose
 
 # LongVideoBench
-torchrun --nproc-per-node=8 run.py --data LongVideoBench_8frame --model Proact-VL --verbose
-torchrun --nproc-per-node=8 run.py --data LongVideoBench_8frame_subs --model Proact-VL --verbose
 torchrun --nproc-per-node=8 run.py --data LongVideoBench_64frame --model Proact-VL --verbose
+torchrun --nproc-per-node=8 run.py --data LongVideoBench_64frame --model Qwen3-VL-8B-Instruct --verbose
+
+<!-- torchrun --nproc-per-node=8 run.py --data LongVideoBench_8frame --model Proact-VL --verbose
+torchrun --nproc-per-node=8 run.py --data LongVideoBench_8frame_subs --model Proact-VL --verbose
 
 python run.py --data LongVideoBench_8frame --model Qwen3-VL-8B-Instruct --verbose
-python run.py --data LongVideoBench_8frame_subs --model Qwen3-VL-8B-Instruct --verbose
-python run.py --data LongVideoBench_64frame --model Qwen3-VL-8B-Instruct --verbose
+python run.py --data LongVideoBench_8frame_subs --model Qwen3-VL-8B-Instruct --verbose -->
+
 ```
