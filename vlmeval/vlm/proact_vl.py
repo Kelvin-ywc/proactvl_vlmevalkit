@@ -15,7 +15,8 @@ class ProactVL(BaseModel):
     def __init__(self):
         assert model_path is not None
         self.model_path = model_path
-        self.model_path = 'oaaoaa/proact_all_fulltuning_base_qwen3vl_final'
+        # self.model_path = 'oaaoaa/proact_all_fulltuning_base_qwen3vl_final'
+        self.model_path = 'oaaoaa/proactvl_base_qwen3vl'
         tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
         tokenizer.padding_side = 'left'
         tokenizer.pad_token_id = tokenizer.eod_id
@@ -73,14 +74,15 @@ class ProactVL(BaseModel):
         answer = self.tokenizer.decode(pred[0][input_ids.size(1):].cpu(), skip_special_tokens=True).strip()
         return answer
 
-from src.infer.multi_assistant_inference import MultiAssistantStreamInference
+from proactvl.infer.multi_assistant_inference import MultiAssistantStreamInference
 class ProactVLChat(BaseModel):
 
     INSTALL_REQ = False
     INTERLEAVE = True
 
     def __init__(self):
-        self.model_path = 'oaaoaa/proact_all_fulltuning_base_qwen3vl_final'
+        # self.model_path = 'oaaoaa/proact_all_fulltuning_base_qwen3vl_final'
+        self.model_path = 'oaaoaa/proactvl_base_qwen3vl'
         # self.tokenizer = AutoTokenizer.from_pretrained(self.model_path, trust_remote_code=True)
         # self.model = AutoModelForCausalLM.from_pretrained(self.model_path, device_map='cuda', trust_remote_code=True).eval()
         # ckpt_path = args.ckpt_path
@@ -100,8 +102,8 @@ class ProactVLChat(BaseModel):
             'top_p': 0.9,
             'repetition_penalty': 1.15,
         }
-
-        self.infer = MultiAssistantStreamInference(None, self.model_path, weight_dir_prefix, infer_config, generate_config, None, 'cuda')
+        print(f'Initializing ProactVLChat with model_path={self.model_path}...')
+        self.infer = MultiAssistantStreamInference(None, self.model_path, infer_config, generate_config, None, 'cuda')
         torch.cuda.empty_cache()
 
     def build_history(self, message):
