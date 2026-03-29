@@ -94,11 +94,12 @@ class ProactVLChat(BaseModel):
             'assistant_num': 1,
             'enable_tts': False,
             'save_dir': './infer_output',
+            'state_threshold': 0.1
         }
         generate_config = {
-            'do_sample': True,
+            'do_sample': False,
             'max_new_tokens': 12,
-            'temperature': 0.7,
+            'temperature': 0.0,
             'top_p': 0.9,
             'repetition_penalty': 1.15,
         }
@@ -150,25 +151,56 @@ class ProactVLChat(BaseModel):
                     }
                 ]
             },
-            {
-                'role': 'user',
-                'content': [
+            # {
+            #     'role': 'user',
+            #     'content': [
 
-                ]
-            }
+            #     ]
+            # }
         ]
         # conversation = []
-        for item in vl_list[1:]:
+        # for item in vl_list[1:]:
+        #     if 'text' in item:
+        #         conversation[1]['content'].append({"type": "text", "text": item['text']})
+        #     elif 'image' in item:
+        #         conversation[1]['content'].append({"type": "image", "image": item['image']})
+        for item in vl_list:
             if 'text' in item:
-                conversation[1]['content'].append({"type": "text", "text": item['text']})
+                conversation.append({
+                    'role': 'user',
+                    'content': [
+                        {
+                            'type': 'text',
+                            'text': f"<|query_start|>{item['text']}<|query_end|>"
+                        }
+                    ]
+                })
             elif 'image' in item:
-                conversation[1]['content'].append({"type": "image", "image": item['image']})
+                conversation.append({
+                    'role': 'user',
+                    'content': [
+                        {
+                            'type': 'image',
+                            'image': item['image']
+                        }
+                    ]
+                })
+                conversation.append({
+                    'role': 'assistant',
+                    'content': [
+                        {
+                            'type': 'text',
+                            'text': '<SILENCE>'
+                        }
+                    ]
+                })
 
-        print(conversation)
+
+        # print(conversation)
         inputs = self.infer.model.processor.apply_chat_template(
             conversation,
             tokenize=True,
-            add_generation_prompt=True,
+            add_generation_prompt=False,
             return_dict=True,
             return_tensors="pt"
         )
