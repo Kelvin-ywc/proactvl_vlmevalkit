@@ -9,7 +9,6 @@ pip install vllm==v0.10.2 --extra-index-url https://download.pytorch.org/whl/cu1
 
 Create a symbolic link from the (proact-vl project)[https://github.com/microsoft/AnthropomorphicIntelligence/tree/main/Proact-VL/proactvl] in the current directory.
 ```
-cd <Proact-VL>
 ln -s Proact-VL/proactvl ./
 ```
 # eval
